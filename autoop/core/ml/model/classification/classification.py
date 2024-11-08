@@ -1,7 +1,7 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 
-from typing import Dict, Any
+from typing import Dict
 
 
 from sklearn.linear_model import LogisticRegression as SKLogisticRegression
@@ -23,11 +23,14 @@ class KNN(FacadeModel):
         self._params["p"] = self._wrapped_model.p
 
     def validate_params(self, params: Dict) -> None:
-        if "n_neighbors" not in params.keys() or "weights" not in params.keys():
-            raise ValueError("Params need to include \"n_neighbors\" and \"weights\".")
+        if ("n_neighbors" not in params.keys()
+                or "weights" not in params.keys()):
+            raise ValueError("Params need "
+                             "to include \"n_neighbors\" and \"weights\".")
 
     def _initialize_model(self) -> KNeighborsClassifier:
-        return KNeighborsClassifier(n_neighbors=self._params["n_neighbors"], weights=self._params["weights"])
+        return KNeighborsClassifier(n_neighbors=self._params["n_neighbors"],
+                                    weights=self._params["weights"])
 
 
 class LogisticRegressionModel(FacadeModel):
@@ -44,7 +47,8 @@ class LogisticRegressionModel(FacadeModel):
             raise ValueError("Params need to include \"C\" and \"max_iter\".")
 
     def _initialize_model(self) -> SKLogisticRegression:
-        return SKLogisticRegression(C=self._params["C"], max_iter=self._params["max_iter"])
+        return SKLogisticRegression(C=self._params["C"],
+                                    max_iter=self._params["max_iter"])
 
 
 class SVCModel(FacadeModel):
@@ -64,4 +68,5 @@ class SVCModel(FacadeModel):
                 raise ValueError(f"Params need to include \"{param}\".")
 
     def _initialize_model(self) -> SVC:
-        return SVC(C=self._params["C"], kernel=self._params["kernel"], gamma=self._params["gamma"])
+        return SVC(C=self._params["C"],
+                   kernel=self._params["kernel"], gamma=self._params["gamma"])
