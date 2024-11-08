@@ -7,6 +7,9 @@ from typing import Dict, Any
 
 
 class Model(ABC):
+    """
+    base class for the model
+    """
     _params: Dict
     _type: str
     """
@@ -14,43 +17,61 @@ class Model(ABC):
     """
 
     def __call__(self, x: np.ndarray) -> np.ndarray:
+        """
+        Put the accent on the fact that the models
+        are functions, and they are callable. It returns what the
+        "predict" method returns on that x.
+        """
         return self.predict(x)
-    """
-    Put the accent on the fact that the models
-    are functions and they are callable. It returns what the
-    "predict" method returns on that x.
-    """
 
     @abstractmethod
     def fit(self, train_x: np.ndarray, train_y: np.ndarray) -> None:
+        """
+        abstract method for fit 
+        """
         pass
 
     @abstractmethod
     def predict(self, x: np.ndarray) -> np.ndarray:
+        """
+        abstract method for predict
+        """
         pass
 
     @property
     def params(self) -> Dict:
+        """
+        get a safe copy of the parameters 
+        """
         return deepcopy(self._params)
 
     @params.setter
     def params(self, params: Dict) -> None:
+        """
+        set the parameters 
+        """
         self.validate_params(params)
         self._params = params
 
     @abstractmethod
     def validate_params(self, params: Dict) -> None:
+        """
+        abstract method for validation
+        """
         pass
 
     @property
     def type(self) -> str:
+        """
+        get the type
+        """
         return self._type
 
     def to_artifact(self, name: str) -> Artifact:
+        """
+        Returns an artifact with a name given and the data being parameters.
+        """
         return Artifact(name=name, data=pickle.dump(self._params))
-    """
-    Returns an artifact with a name given and the data being parameters.
-    """
 
 
 class FacadeModel(Model, ABC):
