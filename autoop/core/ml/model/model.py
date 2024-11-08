@@ -16,7 +16,8 @@ class Model(ABC):
     def __call__(self, x: np.ndarray) -> np.ndarray:
         return self.predict(x)
     """
-    Put the accent on the fact that the models are functions and they are callable. It returns what the 
+    Put the accent on the fact that the models
+    are functions and they are callable. It returns what the
     "predict" method returns on that x.
     """
 
