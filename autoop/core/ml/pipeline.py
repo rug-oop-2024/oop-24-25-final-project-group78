@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict, Any
 import pickle
 
 from autoop.core.ml.artifact import Artifact
@@ -10,7 +10,7 @@ from autoop.functional.preprocessing import preprocess_features
 import numpy as np
 
 
-class Pipeline():
+class Pipeline:
     
     def __init__(self, 
                  metrics: List[Metric],
@@ -19,7 +19,7 @@ class Pipeline():
                  input_features: List[Feature],
                  target_feature: Feature,
                  split=0.8,
-                 ):
+                 ) -> None:
         self._dataset = dataset
         self._model = model
         self._input_features = input_features
@@ -32,19 +32,19 @@ class Pipeline():
         if target_feature.type == "continuous" and model.type != "regression":
             raise ValueError("Model type must be regression for continuous target feature")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"""
-Pipeline(
-    model={self._model.type},
-    input_features={list(map(str, self._input_features))},
-    target_feature={str(self._target_feature)},
-    split={self._split},
-    metrics={list(map(str, self._metrics))},
-)
-"""
+        Pipeline(
+        model={self._model.type},
+        input_features={list(map(str, self._input_features))},
+        target_feature={str(self._target_feature)},
+        split={self._split},
+        metrics={list(map(str, self._metrics))},
+                )
+    """
 
     @property
-    def model(self):
+    def model(self) -> Model:
         return self._model
 
     @property
@@ -71,10 +71,10 @@ Pipeline(
         artifacts.append(self._model.to_artifact(name=f"pipeline_model_{self._model.type}"))
         return artifacts
     
-    def _register_artifact(self, name: str, artifact):
+    def _register_artifact(self, name: str, artifact: Dict) -> None:
         self._artifacts[name] = artifact
 
-    def _preprocess_features(self):
+    def _preprocess_features(self) -> None:
         (target_feature_name, target_data, artifact) = preprocess_features([self._target_feature], self._dataset)[0]
         self._register_artifact(target_feature_name, artifact)
         input_results = preprocess_features(self._input_features, self._dataset)
@@ -84,7 +84,7 @@ Pipeline(
         self._output_vector = target_data
         self._input_vectors = [data for (feature_name, data, artifact) in input_results]
 
-    def _split_data(self):
+    def _split_data(self) -> None:
         # Split the data into training and testing sets
         split = self._split
         self._train_X = [vector[:int(split * len(vector))] for vector in self._input_vectors]
@@ -95,30 +95,46 @@ Pipeline(
     def _compact_vectors(self, vectors: List[np.array]) -> np.array:
         return np.concatenate(vectors, axis=1)
 
-    def _train(self):
+    def _train(self) -> None:
         X = self._compact_vectors(self._train_X)
         Y = self._train_y
         self._model.fit(X, Y)
 
-    def _evaluate(self):
+    def _evaluate(self) -> None:
         X = self._compact_vectors(self._test_X)
         Y = self._test_y
-        self._metrics_results = []
-        predictions = self._model.predict(X)
-        for metric in self._metrics:
-            result = metric.evaluate(predictions, Y)
-            self._metrics_results.append((metric, result))
-        self._predictions = predictions
 
-    def execute(self):
+        X_train = self._compact_vectors(self._train_X)
+        Y_train = self._train_y
+
+        self._metrics_results_test = []
+        self._metrics_results_train = []
+
+        predictions = self._model.predict(X)
+        predictions_train = self._model.predict(X_train)
+
+        for metric in self._metrics:
+            result_test, result_train = metric(predictions, Y), metric(predictions_train, Y_train)
+            self._metrics_results_test.append((metric, result_train))
+            self._metrics_results_train.append((metric, result_test))
+        self._predictions = predictions
+        """
+        I called the metric on the predictions and y, based on how I implemented the metric. I also created a list of 
+        metric results on the training data. When the metrics are calculated, also the metrics are calculated for that
+        training data and saved in "self._metrics_results_train".
+        """
+
+    def execute(self) -> dict[str, Any]:
         self._preprocess_features()
         self._split_data()
         self._train()
         self._evaluate()
         return {
-            "metrics": self._metrics_results,
+            "metrics on training set": self._metrics_results_train,
+            "metrics on evaluation set": self._metrics_results_test,
             "predictions": self._predictions,
         }
+    """
+    Return the values of the metrics results train.
+    """
         
-
-    
