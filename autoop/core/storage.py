@@ -79,6 +79,9 @@ class LocalStorage(Storage):
         os.remove(path)
 
     def list(self, prefix: str = "/") -> List[str]:
+        """
+        return: list of files paths
+        """
         path = self._join_path(prefix)
         self._assert_path_exists(path)
         # Use os.path.join for compatibility across platforms
@@ -87,9 +90,13 @@ class LocalStorage(Storage):
                 for p in keys if os.path.isfile(p)]
 
     def _assert_path_exists(self, path: str):
+        """check path
+        """
         if not os.path.exists(path):
             raise NotFoundError(path)
 
     def _join_path(self, path: str) -> str:
-        # Ensure paths are OS-agnostic
+        """
+        Ensure paths are OS-agnostic
+        """
         return os.path.normpath(os.path.join(self._base_path, path))
