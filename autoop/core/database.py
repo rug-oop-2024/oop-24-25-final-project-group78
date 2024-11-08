@@ -79,7 +79,7 @@ class Database():
             if not data:
                 continue
             for id, item in data.items():
-                self._storage.save(json.dumps(item).encode(), 
+                self._storage.save(json.dumps(item).encode(),
                                    f"{collection}{os.sep}{id}")
 
         # for things that were deleted, we need to remove them from the storage
