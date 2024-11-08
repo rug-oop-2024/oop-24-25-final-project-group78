@@ -5,9 +5,15 @@ import os
 from autoop.core.storage import Storage
 
 
-class Database():
+class Database:
+    """
+    Manage the Database
+    """
 
     def __init__(self, storage: Storage):
+        """
+        take Storage instance as parameter
+        """
         self._storage = storage
         self._data = {}
         self._load()
