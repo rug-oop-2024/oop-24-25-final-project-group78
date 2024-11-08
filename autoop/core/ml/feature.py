@@ -1,12 +1,21 @@
+from enum import Enum
 
-from pydantic import BaseModel, Field
-from typing import Literal
-import numpy as np
+from pydantic import BaseModel
 
-from autoop.core.ml.dataset import Dataset
+
+class FeatureType(str, Enum):
+    NUMERICAL = "numerical"
+    CATEGORICAL = "categorical"
+
+
+"""
+Enumeration that has two fields: numerical and categorical. 
+"""
+
 
 class Feature(BaseModel):
-    # attributes here
+    name: str
+    type: FeatureType
 
-    def __str__(self):
-        raise NotImplementedError("To be implemented.")
+    def __str__(self) -> str:
+        return "Feature: " + self.name + " of type " + self.type
