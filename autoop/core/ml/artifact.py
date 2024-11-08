@@ -14,7 +14,8 @@ class Artifact(BaseModel):
     _metadata: Dict = PrivateAttr(default_factory=dict)
     type: str
     """
-    I added the necessary fields that were mentioned in Pipeline (tags/ metadata/ type).
+    I added the necessary fields that were
+    mentioned in Pipeline (tags/ metadata/ type).
     """
 
     def get_id(self) -> str:
