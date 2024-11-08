@@ -8,6 +8,9 @@ import io
 class Dataset(Artifact):
 
     def __init__(self, *args, **kwargs):
+        """
+        constructor for Dataset
+        """
         super().__init__(type="dataset", *args, **kwargs)
 
     @staticmethod
@@ -15,7 +18,12 @@ class Dataset(Artifact):
                        asset_path: str,
                        version: str = "1.0.0",
                        tags: List = [],
-                       metadata: Dict = {}):
+                       metadata: Dict = {}) -> 'Dataset':
+        """
+        In the initialization of the object Dataset that
+        it is returned in the static method, I added the arguments of the
+        Artifact, that I previously mentioned.
+        """
         return Dataset(
             name=name,
             asset_path=asset_path,
@@ -24,17 +32,20 @@ class Dataset(Artifact):
             tags=tags,
             metadata=metadata
         )
-    """
-    In the initialization of the object Dataset that
-    it is returned in the static method, I added the arguments of the
-    Artifact, that I previously mentioned.
-    """
 
     def read(self) -> pd.DataFrame:
+        """
+        read the dataset
+        return: pandas DataFrame
+        """
         bytes = super().read()
         csv = bytes.decode()
         return pd.read_csv(io.StringIO(csv))
 
     def save(self, data: pd.DataFrame) -> bytes:
+        """
+        save pandas DataFrame as bytes and pass it 
+        to the parent class's "save" method
+        """
         bytes = data.to_csv(index=False).encode()
         return super().save(bytes)
