@@ -11,6 +11,10 @@ import numpy as np
 
 
 class Pipeline:
+    """
+    Orchestrates the different stages. (i.e., preprocessing,
+    splitting, training, evaluation)
+    """
     def __init__(self,
                  metrics: List[Metric],
                  dataset: Dataset,
@@ -19,6 +23,9 @@ class Pipeline:
                  target_feature: Feature,
                  split=0.8,
                  ) -> None:
+        """
+        constructor for Pipeline
+        """
         self._dataset = dataset
         self._model = model
         self._input_features = input_features
@@ -37,6 +44,8 @@ class Pipeline:
                     "for continuous target feature"))
 
     def __str__(self) -> str:
+        """string representation
+        """
         return f"""
         Pipeline(
         model={self._model.type},
@@ -80,9 +89,15 @@ class Pipeline:
         return artifacts
 
     def _register_artifact(self, name: str, artifact: Dict) -> None:
+        """register an artifact
+        """
         self._artifacts[name] = artifact
 
     def _preprocess_features(self) -> None:
+        """
+        Get the input vectors and output vector,
+        sort by feature name for consistency
+        """
         (target_feature_name, target_data, artifact) \
             = preprocess_features([self._target_feature], self._dataset)[0]
         self._register_artifact(target_feature_name, artifact)
@@ -90,14 +105,15 @@ class Pipeline:
             preprocess_features(self._input_features, self._dataset))
         for (feature_name, data, artifact) in input_results:
             self._register_artifact(feature_name, artifact)
-        # Get the input vectors and output vector,
-        # sort by feature name for consistency
         self._output_vector = target_data
         self._input_vectors = [data for
                                (feature_name, data, artifact) in input_results]
 
     def _split_data(self) -> None:
-        # Split the data into training and testing sets
+        """
+        Split the data into training 
+        and testing sets
+        """
         split = self._split
         self._train_X = [vector[:int(split * len(vector))]
                          for vector in self._input_vectors]
@@ -109,14 +125,29 @@ class Pipeline:
                                                len(self._output_vector)):]
 
     def _compact_vectors(self, vectors: List[np.array]) -> np.array:
+        """
+        compact a list of vectors
+        """
         return np.concatenate(vectors, axis=1)
 
     def _train(self) -> None:
+        """
+        train the model
+        """
         X = self._compact_vectors(self._train_X)
         Y = self._train_y
         self._model.fit(X, Y)
 
     def _evaluate(self) -> None:
+        """
+        evaluate the model
+        I called the metric on the predictions and y, based on
+        how I implemented the metric. I also created a list of
+        metric results on the training data. 
+        When the metrics are calculated,
+        also the metrics are calculated for that
+        training data and saved in "self._metrics_results_train".
+        """
         X = self._compact_vectors(self._test_X)
         Y = self._test_y
 
@@ -135,14 +166,11 @@ class Pipeline:
             self._metrics_results_test.append((metric, result_train))
             self._metrics_results_train.append((metric, result_test))
         self._predictions = predictions
-        """I called the metric on the predictions and y, based on
-        how I implemented the metric. I also created a list of
-        metric results on the training data. When the metrics are calculated,
-        also the metrics are calculated for that
-        training data and saved in "self._metrics_results_train".
-        """
 
     def execute(self) -> dict[str, Any]:
+        """
+        Return the values of the metrics results train.
+        """
         self._preprocess_features()
         self._split_data()
         self._train()
@@ -152,6 +180,3 @@ class Pipeline:
             "metrics on evaluation set": self._metrics_results_test,
             "predictions": self._predictions,
         }
-    """
-    Return the values of the metrics results train.
-    """
