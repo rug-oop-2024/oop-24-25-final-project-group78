@@ -24,7 +24,8 @@ def preprocess_features(features: List[Feature], dataset: Dataset) -> List[Tuple
         if feature.type == "numerical":
             scaler = StandardScaler()
             data = scaler.fit_transform(raw[feature.name].values.reshape(-1, 1))
-            artifact = {"type": "StandardScaler", "scaler": scaler.get_params()}
+            artifact = {"type": "StandardScaler",
+                        "scaler": scaler.get_params()}
             results.append((feature.name, data, artifact))
     # Sort for consistency
     results = list(sorted(results, key=lambda x: x[0]))
