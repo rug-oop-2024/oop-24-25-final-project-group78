@@ -7,8 +7,10 @@ from autoop.core.ml.feature import Feature, FeatureType
 
 
 def _get_feature_type(df: pd.DataFrame, column_name: object) -> FeatureType:
-    """Private method (encapsulation) that takes as an argument a data frame and the column name. It accesses the
-    column of the data frame by indexing the data frame on that column and then checks weather the type is categorical 
+    """Private method (encapsulation) that takes as an
+    argument a data frame and the column name. It accesses the
+    column of the data frame by indexing the data frame on
+    that column and then checks weather the type is categorical
     or numerical and returns the associated feature type value.
     Args:
         df: data frame
@@ -25,9 +27,12 @@ def _get_feature_type(df: pd.DataFrame, column_name: object) -> FeatureType:
 
 
 def detect_feature_types(dataset: Dataset) -> List[Feature]:
-    """Reads the dataset as a dataframe using the method read, accesses the columns of the dataframe and for each column
-    of the dataframe, gets the feature type using the private method "get_feature_type" (encapsulation reasons), creates
-    a feature with the name of the column and the feature type, appends it to the list of the features and returns the
+    """Reads the dataset as a dataframe using the method read,
+    accesses the columns of the dataframe and for each column
+    of the dataframe, gets the feature type using
+    the private method "get_feature_type" (encapsulation reasons), creates
+    a feature with the name of the column and the feature type,
+    appends it to the list of the features and returns the
     features.
     Args:
         dataset: Dataset
