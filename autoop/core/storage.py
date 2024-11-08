@@ -5,14 +5,23 @@ from glob import glob
 
 
 class NotFoundError(Exception):
-    def __init__(self, path):
+    """
+    Inherits from Exception.
+    """
+    def __init__(self, path) -> None:
+        """
+        Not found error.
+        """
         super().__init__(f"Path not found: {path}")
 
 
 class Storage(ABC):
+    """
+    Abstract class
+    """
 
     @abstractmethod
-    def save(self, data: bytes, path: str):
+    def save(self, data: bytes, path: str) -> None:
         """
         Save data to a given path
         Args:
@@ -33,7 +42,7 @@ class Storage(ABC):
         pass
 
     @abstractmethod
-    def delete(self, path: str):
+    def delete(self, path: str) -> None:
         """
         Delete data at a given path
         Args:
@@ -54,26 +63,37 @@ class Storage(ABC):
 
 
 class LocalStorage(Storage):
+    """
+    Local storage implementation
+    """
 
-    def __init__(self, base_path: str = "./assets"):
+    def __init__(self, base_path: str = "./assets") -> None:
+        """
+        Constructor for LocalStorage
+        """
         self._base_path = os.path.normpath(base_path)
         if not os.path.exists(self._base_path):
             os.makedirs(self._base_path)
 
-    def save(self, data: bytes, key: str):
+    def save(self, data: bytes, key: str) -> None:
+        """save data
+        """
         path = self._join_path(key)
-        # Ensure parent directories are created
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, 'wb') as f:
             f.write(data)
 
     def load(self, key: str) -> bytes:
+        """load data
+        """
         path = self._join_path(key)
         self._assert_path_exists(path)
         with open(path, 'rb') as f:
             return f.read()
 
-    def delete(self, key: str = "/"):
+    def delete(self, key: str = "/") -> None:
+        """delete data at a given path
+        """
         path = self._join_path(key)
         self._assert_path_exists(path)
         os.remove(path)
@@ -89,7 +109,7 @@ class LocalStorage(Storage):
         return [os.path.relpath(p, self._base_path)
                 for p in keys if os.path.isfile(p)]
 
-    def _assert_path_exists(self, path: str):
+    def _assert_path_exists(self, path: str) -> None:
         """check path
         """
         if not os.path.exists(path):
