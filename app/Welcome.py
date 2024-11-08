@@ -6,4 +6,3 @@ st.set_page_config(
 )
 st.sidebar.success("Select a page above.")
 st.markdown(open("README.md").read())
-
