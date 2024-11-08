@@ -55,24 +55,39 @@ class Model(ABC):
 
 class FacadeModel(Model, ABC):
     """
-
+    Facade model
     """
     def __init__(self, *args, params: Dict = None, **kwargs) -> None:
+        """
+        initialize Facade model
+        """
         super().__init__(*args, **kwargs)
         self.params = params if params is not None else {}
         self._wrapped_model = self._initialize_model()
 
     def fit(self, train_x: np.ndarray, train_y: np.ndarray) -> None:
+        """
+        fit model
+        """
         self._wrapped_model.fit(train_x, train_y)
         self._set_params_from_model()
 
     def predict(self, x: np.ndarray) -> np.ndarray:
+        """
+        predict using wrapped model
+        """
         return self._wrapped_model.predict(x)
 
     @abstractmethod
     def _initialize_model(self) -> Any:
+        """
+        initialize the model
+        """
         pass
 
     @abstractmethod
     def _set_params_from_model(self) -> None:
+        """
+        set the parameters
+        """
         pass
