@@ -19,11 +19,14 @@ class RegularizedRegression(FacadeModel, ABC):
     def __init__(self, *args, params: Dict = None, **kwargs) -> None:
         super().__init__(*args, params=params, **kwargs)
         self._type = "regression"
-        self.params = params if params is not None else {"alpha": 1, "max_iter": 1000}
+        self.params = params if (params
+                                 is not None) \
+            else {"alpha": 1, "max_iter": 1000}
 
     def validate_params(self, params: Dict) -> None:
         if "alpha" not in params.keys() or "max_iter" not in params.keys():
-            raise ValueError("Invalid params. They should contain alpha and max_iter.")
+            raise ValueError("Invalid params. "
+                             "They should contain alpha and max_iter.")
 
     def _set_params_from_model(self) -> None:
         self._params["coef_"] = self._wrapped_model.coef_
@@ -32,12 +35,14 @@ class RegularizedRegression(FacadeModel, ABC):
 
 class Lasso(RegularizedRegression):
     def _initialize_model(self) -> SKLasso:
-        return SKLasso(alpha=self._params["alpha"], max_iter=self._params["max_iter"])
+        return SKLasso(alpha=self._params["alpha"],
+                       max_iter=self._params["max_iter"])
 
 
 class Ridge(RegularizedRegression):
     def _initialize_model(self) -> SKRidge:
-        return SKRidge(alpha=self._params["alpha"], max_iter=self._params["max_iter"])
+        return SKRidge(alpha=self._params["alpha"],
+                       max_iter=self._params["max_iter"])
 
 
 class MultipleLinearRegression(FacadeModel):
@@ -50,7 +55,8 @@ class MultipleLinearRegression(FacadeModel):
 
     def validate_params(self, params: Dict) -> None:
         """
-        Linear regression has no regularization parameters, so no specific validation is needed
+        Linear regression has no regularization parameters,
+        so no specific validation is needed
         """
         pass
 
