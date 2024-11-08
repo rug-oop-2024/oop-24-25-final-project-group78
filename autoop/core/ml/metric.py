@@ -19,7 +19,8 @@ class Metric(ABC):
     """
 
     @abstractmethod
-    def __call__(self, y_true: Union[List[float], np.ndarray], y_pred: Union[List[float], np.ndarray]) -> float:
+    def __call__(self, y_true: Union[List[float], np.ndarray],
+                 y_pred: Union[List[float], np.ndarray]) -> float:
         pass
 
 
@@ -49,17 +50,20 @@ def get_metric(name: str) -> Metric:
 
 
 class MeanSquaredError(Metric):
-    def __call__(self, y_true: Union[List[float], np.ndarray], y_pred: Union[List[float], np.ndarray]) -> float:
+    def __call__(self, y_true: Union[List[float], np.ndarray],
+                 y_pred: Union[List[float], np.ndarray]) -> float:
         return float(np.square(np.subtract(y_true, y_pred)).mean())
 
 
 class Accuracy(Metric):
-    def __call__(self, y_true: Union[List[float], np.ndarray], y_pred: Union[List[float], np.ndarray]) -> float:
+    def __call__(self, y_true: Union[List[float], np.ndarray],
+                 y_pred: Union[List[float], np.ndarray]) -> float:
         return float(np.sum(np.equal(y_true, y_pred)) / len(y_true))
 
 
 class Recall(Metric):
-    def __call__(self, y_true: Union[List[float], np.ndarray], y_pred: Union[List[float], np.ndarray]) -> float:
+    def __call__(self, y_true: Union[List[float], np.ndarray],
+                 y_pred: Union[List[float], np.ndarray]) -> float:
         unique_classes = np.unique(y_true)
         recall_scores = []
 
@@ -78,18 +82,21 @@ class Recall(Metric):
 
 
 class MeanAbsoluteError(Metric):
-    def __call__(self, y_true: Union[List[float], np.ndarray], y_pred: Union[List[float], np.ndarray]) -> float:
+    def __call__(self, y_true: Union[List[float], np.ndarray],
+                 y_pred: Union[List[float], np.ndarray]) -> float:
         return float(np.mean(np.abs(y_true - y_pred)))
 
 
 class RootMeanSquaredError(Metric):
-    def __call__(self, y_true: Union[List[float], np.ndarray], y_pred: Union[List[float], np.ndarray]) -> float:
+    def __call__(self, y_true: Union[List[float], np.ndarray],
+                 y_pred: Union[List[float], np.ndarray]) -> float:
         mean_squared_error = np.square(np.subtract(y_true, y_pred)).mean()
         return float(np.sqrt(mean_squared_error))
 
 
 class CoefficientOfDetermination(Metric):
-    def __call__(self, y_true: Union[List[float], np.ndarray], y_pred: Union[List[float], np.ndarray]) -> float:
+    def __call__(self, y_true: Union[List[float], np.ndarray],
+                 y_pred: Union[List[float], np.ndarray]) -> float:
         rss = np.sum(np.square(y_true - y_pred))
         tss = np.sum(np.square(y_true - np.mean(y_true)))
         coef_of_determination = 1 - (rss / tss)
@@ -98,14 +105,18 @@ class CoefficientOfDetermination(Metric):
 
 class CategoricalCrossEntropy(Metric):
 
-    def __call__(self, y_true: Union[List[float], np.ndarray], y_pred: Union[List[float], np.ndarray]) -> float:
+    def __call__(self, y_true: Union[List[float], np.ndarray],
+                 y_pred: Union[List[float], np.ndarray]) -> float:
         return float(-np.sum(y_true * np.log(y_pred)))
 
 
 class ConfusionMatrix(Metric):
-    def __call__(self, y_true: Union[List[int], np.ndarray], y_pred: Union[List[int], np.ndarray]) -> np.ndarray:
+    def __call__(self, y_true: Union[List[int], np.ndarray],
+                 y_pred: Union[List[int], np.ndarray]) -> np.ndarray:
         max_label = max(max(y_true), max(y_pred))
-        confusion_matrix = np.zeros((max_label + 1, max_label + 1), dtype=np.int16)
+        confusion_matrix = (
+            np.zeros((max_label + 1,
+                      max_label + 1), dtype=np.int16))
 
         for true, pred in zip(y_true, y_pred):
             confusion_matrix[true, pred] += 1
