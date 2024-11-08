@@ -1,5 +1,81 @@
-from pydantic import BaseModel, Field
+from typing import Optional, List, Dict
+
+from pydantic import BaseModel, Field, PrivateAttr
 import base64
+from copy import deepcopy
+
 
 class Artifact(BaseModel):
-    pass
+    """
+    I added the necessary fields that were
+    mentioned in Pipeline (tags/ metadata/ type).
+    """
+    asset_path: str
+    name: str
+    version: str
+    data: Optional[bytes] = Field(default=None)
+    _tags: List = PrivateAttr(default_factory=list)
+    _metadata: Dict = PrivateAttr(default_factory=dict)
+    type: str
+
+    def get_id(self) -> str:
+        """
+        :return: The id formatted as given in the instructions
+        """
+        encoded_path = base64.b64encode(self.asset_path.encode()).decode()
+        return f"{encoded_path}:{self.version}"
+
+    def read(self) -> bytes:
+        """
+        Returns the data of the Artifact if it is not None.
+        """
+        if self.data is None:
+            raise ValueError("The data is None.")
+        else:
+            return self.data
+
+    def save(self, data: bytes) -> bytes:
+        """
+        Save the given data in "self.data" and returns the data.
+        """
+        self.data = data
+        return self.data
+
+    @property
+    def metadata(self) -> Dict:
+        """
+        getter for metadata
+        """
+        return deepcopy(self._metadata)
+
+    @metadata.setter
+    def metadata(self, metadata: Dict) -> None:
+        """
+        sets the metadata
+        """
+        if not isinstance(metadata, Dict):
+            raise TypeError("Wrong type.")
+        self._metadata = metadata
+
+    @property
+    def tags(self) -> List:
+        """
+        getter for the tags
+        """
+        return deepcopy(self._tags)
+
+    @tags.setter
+    def tags(self, tags: List) -> None:
+        """
+        set the tags
+        """
+        if not isinstance(tags, List):
+            raise TypeError("Wrong type.")
+        self._tags = tags
+
+    @property
+    def id(self) -> str:
+        """
+        getter for id
+        """
+        return self.get_id()

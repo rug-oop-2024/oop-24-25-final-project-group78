@@ -6,8 +6,9 @@ from autoop.core.ml.pipeline import Pipeline
 from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.feature import Feature
 from autoop.functional.feature import detect_feature_types
-from autoop.core.ml.model.regression import MultipleLinearRegression
+from autoop.core.ml.model.regression.multiple_linear_regression import MultipleLinearRegression
 from autoop.core.ml.metric import MeanSquaredError
+
 
 class TestPipeline(unittest.TestCase):
 
@@ -26,7 +27,8 @@ class TestPipeline(unittest.TestCase):
         self.pipeline = Pipeline(
             dataset=self.dataset,
             model=MultipleLinearRegression(),
-            input_features=list(filter(lambda x: x.name != "age", self.features)),
+            input_features=list(filter(lambda x: x.name != "age",
+                                       self.features)),
             target_feature=Feature(name="age", type="numerical"),
             metrics=[MeanSquaredError()],
             split=0.8
@@ -43,14 +45,19 @@ class TestPipeline(unittest.TestCase):
     def test_split_data(self):
         self.pipeline._preprocess_features()
         self.pipeline._split_data()
-        self.assertEqual(self.pipeline._train_X[0].shape[0], int(0.8 * self.ds_size))
-        self.assertEqual(self.pipeline._test_X[0].shape[0], self.ds_size - int(0.8 * self.ds_size))
+        self.assertEqual(self.pipeline._train_X[0].shape[0],
+                         int(0.8 * self.ds_size))
+        self.assertEqual(self.pipeline._test_X[0].shape[0],
+                         self.ds_size - int(0.8 * self.ds_size))
 
     def test_train(self):
         self.pipeline._preprocess_features()
         self.pipeline._split_data()
         self.pipeline._train()
-        self.assertIsNotNone(self.pipeline._model.parameters)
+        self.assertIsNotNone(self.pipeline._model.params)
+        '''
+        I modified "parameters" in "params" based on my implementation
+        '''
 
     def test_evaluate(self):
         self.pipeline._preprocess_features()
@@ -58,5 +65,5 @@ class TestPipeline(unittest.TestCase):
         self.pipeline._train()
         self.pipeline._evaluate()
         self.assertIsNotNone(self.pipeline._predictions)
-        self.assertIsNotNone(self.pipeline._metrics_results)
-        self.assertEqual(len(self.pipeline._metrics_results), 1)
+        self.assertIsNotNone(self.pipeline._metrics_results_test)
+        self.assertEqual(len(self.pipeline._metrics_results_test), 1)
