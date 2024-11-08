@@ -9,7 +9,7 @@ class FeatureType(str, Enum):
 
 
 """
-Enumeration that has two fields: numerical and categorical. 
+Enumeration that has two fields: numerical and categorical.
 """
 
 
