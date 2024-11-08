@@ -8,7 +8,7 @@ class NotFoundError(Exception):
     """
     Inherits from Exception.
     """
-    def __init__(self, path) -> None:
+    def __init__(self, path: str) -> None:
         """
         Not found error.
         """
