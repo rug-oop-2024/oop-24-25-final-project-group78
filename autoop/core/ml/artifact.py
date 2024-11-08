@@ -6,6 +6,10 @@ from copy import deepcopy
 
 
 class Artifact(BaseModel):
+    """
+    I added the necessary fields that were
+    mentioned in Pipeline (tags/ metadata/ type).
+    """
     asset_path: str
     name: str
     version: str
@@ -13,10 +17,6 @@ class Artifact(BaseModel):
     _tags: List = PrivateAttr(default_factory=list)
     _metadata: Dict = PrivateAttr(default_factory=dict)
     type: str
-    """
-    I added the necessary fields that were
-    mentioned in Pipeline (tags/ metadata/ type).
-    """
 
     def get_id(self) -> str:
         """
@@ -43,24 +43,39 @@ class Artifact(BaseModel):
 
     @property
     def metadata(self) -> Dict:
+        """
+        getter for metadata
+        """
         return deepcopy(self._metadata)
 
     @metadata.setter
     def metadata(self, metadata: Dict) -> None:
+        """
+        sets the metadata
+        """
         if not isinstance(metadata, Dict):
             raise TypeError("Wrong type.")
         self._metadata = metadata
 
     @property
     def tags(self) -> List:
+        """
+        getter for the tags
+        """
         return deepcopy(self._tags)
 
     @tags.setter
     def tags(self, tags: List) -> None:
+        """
+        set the tags
+        """
         if not isinstance(tags, List):
             raise TypeError("Wrong type.")
         self._tags = tags
 
     @property
     def id(self) -> str:
+        """
+        getter for id
+        """
         return self.get_id()
