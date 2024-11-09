@@ -15,23 +15,34 @@ METRICS = [
 
 
 class Metric(ABC):
-    """Base class for all metrics.
+    """
+    Abstract base class for all metrics.
     """
 
     @abstractmethod
     def __call__(self, y_true: Union[List[float], np.ndarray],
                  y_pred: Union[List[float], np.ndarray]) -> float:
         """
-        abstract method
+        Abstract method
+        Args:
+            y_true (Union[List[float], np.ndarray]): Ground truth.
+            y_pred (Union[List[float], np.ndarray]): Predicted values.
+        Returns:
+            float: Computed metric value.
         """
         pass
 
 
 def get_metric(name: str) -> Metric:
-    """Factory function to get a metric by name.
-    :return: a metric instance given its str name
     """
-
+    Factory function to get a metric instance by name.
+    Args:
+        name (str): Name of the metric.
+    Returns:
+        Metric: An instance of the specified metric.
+    Raises:
+        ValueError: If the metric name is not recognized.
+    """
     if name not in METRICS:
         raise ValueError("Unknown metric name")
     if name == "mean_squared_error":
@@ -54,36 +65,51 @@ def get_metric(name: str) -> Metric:
 
 class MeanSquaredError(Metric):
     """
-    MSE, regression
+    Mean Squared Error for regression tasks.
     """
     def __call__(self, y_true: Union[List[float], np.ndarray],
                  y_pred: Union[List[float], np.ndarray]) -> float:
         """
-        calculate MSE
+        Calculate Mean Squared Error.
+        Args:
+            y_true (Union[List[float], np.ndarray]): Ground truth values.
+            y_pred (Union[List[float], np.ndarray]): Predicted values.
+        Returns:
+            float: The MSE value.
         """
         return float(np.square(np.subtract(y_true, y_pred)).mean())
 
 
 class Accuracy(Metric):
     """
-    Accuracy, classification
+    Accuracy metric for classification tasks.
     """
     def __call__(self, y_true: Union[List[float], np.ndarray],
                  y_pred: Union[List[float], np.ndarray]) -> float:
         """
-        calculate Accuracy
+        Calculate accuracy.
+        Args:
+            y_true (Union[List[float], np.ndarray]): Ground truth values.
+            y_pred (Union[List[float], np.ndarray]): Predicted values.
+        Returns:
+            float: The accuracy value.
         """
         return float(np.sum(np.equal(y_true, y_pred)) / len(y_true))
 
 
 class Recall(Metric):
     """
-    Recall, classification
+    Recall metric for classification tasks
     """
     def __call__(self, y_true: Union[List[float], np.ndarray],
                  y_pred: Union[List[float], np.ndarray]) -> float:
         """
-        calculate recall
+        Calculate recall
+        Args:
+            y_true (Union[List[float], np.ndarray]): Ground truth values.
+            y_pred (Union[List[float], np.ndarray]): Predicted values.
+        Returns:
+            float: The recall value.
         """
         unique_classes = np.unique(y_true)
         recall_scores = []
@@ -92,36 +118,43 @@ class Recall(Metric):
             true_positives = np.sum((y_pred == _class) & (y_true == _class))
             false_negatives = np.sum((y_pred != _class) & (y_true == _class))
 
-            if (true_positives + false_negatives) > 0:
-                recall = true_positives / (true_positives + false_negatives)
-            else:
-                recall = 0
+            recall = true_positives / (true_positives + false_negatives) \
+                if (true_positives + false_negatives) > 0 else 0
             recall_scores.append(recall)
 
-        average_recall = float(np.mean(recall_scores))
-        return average_recall
+        return float(np.mean(recall_scores))
 
 
 class MeanAbsoluteError(Metric):
     """
-    MAE, regression
+    Mean Absolute Error for regression tasks.
     """
     def __call__(self, y_true: Union[List[float], np.ndarray],
                  y_pred: Union[List[float], np.ndarray]) -> float:
         """
-        calculate MAE
+        Calculate Mean Absolute Error.
+        Args:
+            y_true (Union[List[float], np.ndarray]): Ground truth values.
+            y_pred (Union[List[float], np.ndarray]): Predicted values.
+        Returns:
+            float: The MAE value.
         """
         return float(np.mean(np.abs(y_true - y_pred)))
 
 
 class RootMeanSquaredError(Metric):
     """
-    RMSE, regression
+    Root Mean Squared Error for regression tasks.
     """
     def __call__(self, y_true: Union[List[float], np.ndarray],
                  y_pred: Union[List[float], np.ndarray]) -> float:
         """
-        calculate RMSE
+        Calculate Root Mean Squared Error.
+        Args:
+            y_true (Union[List[float], np.ndarray]): Ground truth values.
+            y_pred (Union[List[float], np.ndarray]): Predicted values.
+        Returns:
+            float: The RMSE value.
         """
         mean_squared_error = np.square(np.subtract(y_true, y_pred)).mean()
         return float(np.sqrt(mean_squared_error))
@@ -129,41 +162,55 @@ class RootMeanSquaredError(Metric):
 
 class CoefficientOfDetermination(Metric):
     """
-    Coefficient Of Determination, regression
+    Coefficient of Determination for regression tasks.
     """
     def __call__(self, y_true: Union[List[float], np.ndarray],
                  y_pred: Union[List[float], np.ndarray]) -> float:
         """
-        calculate Coefficient Of Determination
+        Calculate Coefficient of Determination
+        Args:
+            y_true (Union[List[float], np.ndarray]): Ground truth values.
+            y_pred (Union[List[float], np.ndarray]): Predicted values.
+        Returns:
+            float: The COD value.
         """
         rss = np.sum(np.square(y_true - y_pred))
         tss = np.sum(np.square(y_true - np.mean(y_true)))
-        coef_of_determination = 1 - (rss / tss)
-        return float(coef_of_determination)
+        return float(1 - (rss / tss))
 
 
 class CategoricalCrossEntropy(Metric):
     """
-    Categorical Cross Entropy Loss, classification
+    Categorical Cross Entropy Loss for classification tasks.
     """
-
     def __call__(self, y_true: Union[List[float], np.ndarray],
                  y_pred: Union[List[float], np.ndarray]) -> float:
         """
-        calculate Categorical Cross Entropy Loss
+        Calculate Categorical Cross Entropy Loss.
+        Args:
+            y_true (Union[List[float], np.ndarray]): Ground truth values.
+            y_pred (Union[List[float], np.ndarray]): Predicted probabilities.
+        Returns:
+            float: The cross-entropy loss value.
         """
         return float(-np.sum(y_true * np.log(y_pred)))
 
 
 class ConfusionMatrix(Metric):
     """
-    Confusion Matrix, classification
+    Confusion Matrix for classification tasks.
     """
-    
     def __call__(self, y_true: Union[List[int], np.ndarray],
                  y_pred: Union[List[int], np.ndarray]) -> np.ndarray:
         """
-        calculate Confusion Matrix
+        Calculate Confusion Matrix.
+        Args:
+            y_true (Union[List[int], np.ndarray]):
+            Ground truth values (integer labels).
+            y_pred (Union[List[int], np.ndarray]):
+            Predicted values (integer labels).
+        Returns:
+            np.ndarray: The confusion matrix
         """
         max_label = max(max(y_true), max(y_pred))
         confusion_matrix = (
