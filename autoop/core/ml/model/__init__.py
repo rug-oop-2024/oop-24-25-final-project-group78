@@ -1,3 +1,6 @@
+"""
+classification and regression models
+"""
 from typing import Dict
 
 from autoop.core.ml.model.model import Model
