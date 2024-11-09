@@ -3,7 +3,7 @@ from abc import abstractmethod, ABC
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 from copy import deepcopy
-from typing import Dict, Any
+from typing import Dict
 
 
 class Model(ABC):
@@ -137,7 +137,7 @@ class FacadeModel(Model, ABC):
         return self._wrapped_model.predict(x)
 
     @abstractmethod
-    def _initialize_model(self) -> Any:
+    def _initialize_model(self) -> Model:
         """
         Abstract method for initializing the wrapped model instance.
         Returns:
