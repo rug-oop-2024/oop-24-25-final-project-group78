@@ -10,7 +10,7 @@ class Database:
     Manage the Database
     """
 
-    def __init__(self, storage: Storage):
+    def __init__(self, storage: Storage) -> None:
         """
         take Storage instance as parameter
         """
