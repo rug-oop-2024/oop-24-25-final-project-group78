@@ -136,17 +136,13 @@ class Pipeline:
         """
         split = self._split
         self._train_X = \
-            [vector[:int(split
-                         * len(vector))] for vector in self._input_vectors]
+            [vector[:int(split * len(vector))] for vector in self._input_vectors]
         self._test_X = \
-            [vector[int(split
-                        * len(vector)):] for vector in self._input_vectors]
+            [vector[int(split * len(vector)):] for vector in self._input_vectors]
         self._train_y = (
-                            self._output_vector)[:int(split
-                                                      * len(self._output_vector))]
+                            self._output_vector)[:int(split * len(self._output_vector))]
         self._test_y = (
-                           self._output_vector)[int(split
-                                                    * len(self._output_vector)):]
+                           self._output_vector)[int(split * len(self._output_vector)):]
 
     @staticmethod
     def _compact_vectors(vectors: List[np.array]) -> np.array:
