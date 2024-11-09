@@ -9,7 +9,7 @@ class Dataset(Artifact):
     A Dataset class inheriting from Artifact.
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         """
         Initializes a Dataset instance with the type set as "dataset".
         Args:
