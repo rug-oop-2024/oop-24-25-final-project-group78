@@ -10,7 +10,7 @@ from app.core.system import AutoMLSystem
 st.set_page_config(page_title="Modelling", page_icon="📈")
 
 
-def write_helper_text(text: str):
+def write_helper_text(text: str) -> None:
     """Helper function to display helper text with custom styling.
     Args:
         text (str): Text to be displayed.
