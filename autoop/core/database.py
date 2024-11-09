@@ -19,7 +19,7 @@ class Database:
         self._load()
 
     def set(self, collection: str, id: str, entry: dict) -> dict:
-        """Set a key in the database
+        """
         Args:
             collection (str): The collection to store the data in
             id (str): The id of the data
@@ -37,7 +37,7 @@ class Database:
         return entry
 
     def get(self, collection: str, id: str) -> Union[dict, None]:
-        """Get a key from the database
+        """
         Args:
             collection (str): The collection to get the data from
             id (str): The id of the data
@@ -50,7 +50,7 @@ class Database:
         return self._data[collection].get(id, None)
 
     def delete(self, collection: str, id: str) -> None:
-        """Delete a key from the database
+        """
         Args:
             collection (str): The collection to delete the data from
             id (str): The id of the data
@@ -64,7 +64,7 @@ class Database:
         self._persist()
 
     def list(self, collection: str) -> List[Tuple[str, dict]]:
-        """Lists all data in a collection
+        """
         Args:
             collection (str): The collection to list the data from
         Returns:
@@ -76,7 +76,7 @@ class Database:
         return [(id, data) for id, data in self._data[collection].items()]
 
     def refresh(self) -> None:
-        """Refresh the database by loading the data from storage"""
+        """Refresh the database"""
         self._load()
 
     def _persist(self) -> None:
@@ -88,7 +88,6 @@ class Database:
                 self._storage.save(json.dumps(item).encode(),
                                    f"{collection}{os.sep}{id}")
 
-        # for things that were deleted, we need to remove them from the storage
         keys = self._storage.list("")
         for key in keys:
             collection, id = key.split(os.sep)[-2:]
@@ -101,7 +100,6 @@ class Database:
         for key in self._storage.list(""):
             collection, id = key.split(os.sep)[-2:]
             data = self._storage.load(f"{collection}{os.sep}{id}")
-            # Ensure the collection exists in the dictionary
             if collection not in self._data:
                 self._data[collection] = {}
             self._data[collection][id] = json.loads(data.decode())
