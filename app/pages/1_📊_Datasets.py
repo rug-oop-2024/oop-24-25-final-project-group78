@@ -6,18 +6,22 @@ import pandas as pd
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
 
-
-# Add the absolute path to the project root directory
 sys.path.insert(0,
                 os.path.abspath
                 ("C:/Users/Bianca/Desktop/OOP 2/"
                  "oop-24-25-final-project-group_80"))
 
 
+st.set_page_config(page_title="Manage Datasets", page_icon="📊")
+
+
 def app():
+    """Streamlit application function to manage datasets."""
+
     automl = AutoMLSystem.get_instance()
 
     datasets = automl.registry.list(type="dataset")
+    print(datasets)
 
     st.title('Manage the datasets')
 
@@ -25,7 +29,6 @@ def app():
 
     if uploaded_file is not None:
         df = pd.read_csv(uploaded_file)
-        # Display the DataFrame for confirmation
         st.write("Preview of the uploaded dataset: " + uploaded_file.name)
         st.write(df.head())
 
