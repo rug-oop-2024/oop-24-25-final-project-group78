@@ -1,9 +1,16 @@
 from typing import Dict
+"""
+import from Dict
+"""
 
 from autoop.core.ml.model.model import Model
 
 from autoop.core.ml.model.regression.multiple_linear_regression import MultipleLinearRegression, Lasso, Ridge
 from autoop.core.ml.model.classification.classification import KNN, LogisticRegressionModel, SVCModel
+# I wanted to split the previous two lines, 
+# so I can pass the flake8 tests,
+# but this is not possible 
+# without producing an error
 
 REGRESSION_MODELS = [
     "MultipleLinearRegression",
