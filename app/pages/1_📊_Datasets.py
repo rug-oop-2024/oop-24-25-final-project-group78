@@ -15,7 +15,7 @@ sys.path.insert(0,
 st.set_page_config(page_title="Manage Datasets", page_icon="📊")
 
 
-def app():
+def app() -> None:
     """Streamlit application function to manage datasets."""
 
     automl = AutoMLSystem.get_instance()
