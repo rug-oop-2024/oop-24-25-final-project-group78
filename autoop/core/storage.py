@@ -9,7 +9,7 @@ class NotFoundError(Exception):
     Custom exception raised when a specified path cannot be found.
     """
 
-    def __init__(self, path) -> None:
+    def __init__(self, path: str) -> None:
         """
         Initialize the NotFoundError with a specific path.
 
