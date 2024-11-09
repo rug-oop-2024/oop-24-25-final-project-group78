@@ -5,4 +5,5 @@ st.set_page_config(
     page_icon="👋",
 )
 st.sidebar.success("Select a page above.")
-st.markdown(open("README.md").read())
+# Commented because the decoder could not decode the emoji's in the readme
+# st.markdown(open("README.md").read())
