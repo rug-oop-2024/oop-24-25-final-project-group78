@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import Any, Dict
+from typing import Dict
+from typing import Union
 
 from sklearn.linear_model import Lasso as SKLasso
 from sklearn.linear_model import LinearRegression as SKLinearRegression
@@ -13,7 +14,7 @@ class RegularizedRegression(FacadeModel, ABC):
     for regularized regression models."""
 
     @abstractmethod
-    def _initialize_model(self) -> Any:
+    def _initialize_model(self) -> Union[SKLasso, SKRidge]:
         """
         Initializes and returns the specific regression model.
         Returns:
