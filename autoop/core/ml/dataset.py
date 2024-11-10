@@ -34,7 +34,7 @@ class Dataset(Artifact):
             Defaults to an empty dictionary.
 
         Returns:
-            Dataset: A Dataset instance containing the DataFrame as CSV bytes.
+            Dataset: A Dataset instance.
         """
         return Dataset(
             name=name,
