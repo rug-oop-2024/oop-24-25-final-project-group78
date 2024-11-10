@@ -153,7 +153,6 @@ class FacadeModel(Model, ABC):
     ]:
         """
         Abstract method for initializing the wrapped model instance.
-        
         Returns:
             Any: The initialized model instance.
         """
