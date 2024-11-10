@@ -26,11 +26,7 @@ class TestStorage(unittest.TestCase):
 
     def test_store(self):
         """
-        Test the 'save' and 'load' functionality
-        by saving a byte sequence to a specific
-        key and verifying that it can be retrieved correctly.
-        Also tests the behavior when
-        trying to load a non-existent key, expecting a NotFoundError.
+        Test the 'store' functionality.
         """
         # key = str(random.randint(0, 100))
         test_bytes = bytes([random.randint(0, 255) for _ in range(100)])
