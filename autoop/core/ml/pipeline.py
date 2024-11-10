@@ -197,8 +197,7 @@ class Pipeline:
         """
         Executes the full pipeline
         Returns:
-            dict: Dictionary containing metric results for both training
-                  and testing sets, and model predictions.
+            dict: Dictionary
         """
         self._preprocess_features()
         self._split_data()
