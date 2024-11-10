@@ -49,7 +49,7 @@ class Dataset(Artifact):
         """
         Reads the dataset
         Returns:
-            pd.DataFrame: The dataset as a DataFrame.
+            pd.DataFrame
         """
         bytes_data = super().read()
         csv_str = bytes_data.decode()
