@@ -130,7 +130,7 @@ class Pipeline:
         self._input_vectors = \
             [data for feature_name, data, artifact in input_results]
 
- def _split_data(self) -> None:
+     def _split_data(self) -> None:
         """
         Splits the data into training and testing sets.
         """
