@@ -1,15 +1,16 @@
-import sys
-import os
 import streamlit as st
 import pandas as pd
 
 from app.core.system import AutoMLSystem
 from autoop.core.ml.dataset import Dataset
 
+# import sys
+# import os
+
 # sys.path.insert(0,
-                # os.path.abspath
-                # ("C:/Users/Bianca/Desktop/OOP 2/"
-                 # "oop-24-25-final-project-group_80"))
+#                 os.path.abspath
+#                 ("C:/Users/Bianca/Desktop/OOP 2/"
+#                  "oop-24-25-final-project-group_80"))
 """
 I used this because my system was not
 using the right path to the app.
