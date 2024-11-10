@@ -68,8 +68,7 @@ class Database:
         Args:
             collection (str): The collection to list the data from
         Returns:
-            List[Tuple[str, dict]]: A list of tuples containing the
-            id and data for each item in the collection
+            List[Tuple[str, dict]]: A list of tuples
         """
         if not self._data.get(collection, None):
             return []
