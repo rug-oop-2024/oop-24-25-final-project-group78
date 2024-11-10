@@ -1,5 +1,11 @@
 import pickle
 from abc import abstractmethod, ABC
+
+from sklearn.linear_model import Ridge, Lasso, LinearRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.linear_model import LogisticRegression
+
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 from copy import deepcopy
@@ -137,7 +143,11 @@ class FacadeModel(Model, ABC):
         return self._wrapped_model.predict(x)
 
     @abstractmethod
-    def _initialize_model(self) -> Model:
+    def _initialize_model(self) -> (
+            Ridge | Lasso |
+            LinearRegression |
+            LogisticRegression | KNeighborsClassifier
+            | SVC):
         """
         Abstract method for initializing the wrapped model instance.
         Returns:
