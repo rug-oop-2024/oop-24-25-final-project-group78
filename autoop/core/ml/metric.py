@@ -21,14 +21,14 @@ class Metric(ABC):
 
     @abstractmethod
     def __call__(self, y_true: Union[List[float], np.ndarray],
-                 y_pred: Union[List[float], np.ndarray]) -> float:
+                 y_pred: Union[List[float], np.ndarray]) -> float | np.ndarray:
         """
         Abstract method
         Args:
             y_true (Union[List[float], np.ndarray]): Ground truth.
             y_pred (Union[List[float], np.ndarray]): Predicted values.
         Returns:
-            float: Computed metric value.
+            float | np.ndarray
         """
         pass
 
