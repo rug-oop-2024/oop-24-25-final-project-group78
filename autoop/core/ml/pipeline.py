@@ -21,7 +21,7 @@ class Pipeline:
                  model: Model,
                  input_features: List[Feature],
                  target_feature: Feature,
-                 split=0.8: float) -> None:
+                 split: float=0.8) -> None:
         """
         Initializes the Pipeline with the necessary components.
         Args:
