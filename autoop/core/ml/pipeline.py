@@ -21,7 +21,7 @@ class Pipeline:
                  model: Model,
                  input_features: List[Feature],
                  target_feature: Feature,
-                 split: float=0.8) -> None:
+                 split: float = 0.8) -> None:
         """
         Initializes the Pipeline with the necessary components.
         Args:
@@ -43,10 +43,14 @@ class Pipeline:
         self._metrics = metrics
         self._artifacts = {}
         self._split = split
-        if (target_feature.type == "categorical" and model.type != "classification"):
+        target_categorical = target_feature.type == "categorical"
+        target_cont = target_feature.type == "continuous"
+        model_classif = model.type != "classification"
+        model_reg = model.type != "regression"
+        if target_categorical and model_classif:
             raise ValueError("Model type must be "
                              "classification for categorical target feature")
-        if target_feature.type == "continuous" and model.type != "regression":
+        if target_cont and model_reg:
             raise ValueError("Model type must be regression "
                              "for continuous target feature")
 
@@ -141,10 +145,10 @@ class Pipeline:
             vector[: index] for vector in self._input_vectors
         ]
         self._test_X = [
-            vector[index: ] for vector in self._input_vectors
+            vector[index:] for vector in self._input_vectors
         ]
         self._train_y = self._output_vector[: index]
-        self._test_y = self._output_vector[index: ]
+        self._test_y = self._output_vector[index:]
 
     @staticmethod
     def _compact_vectors(vectors: List[np.array]) -> np.array:
