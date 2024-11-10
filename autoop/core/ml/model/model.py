@@ -154,7 +154,7 @@ class FacadeModel(Model, ABC):
         """
         Abstract method for initializing the wrapped model instance.
         Returns:
-            Union[Eidge, Lasso, LinearRegression,
+            Union[Ridge, Lasso, LinearRegression,
             LogisticRegression, KneighborsClassifier, SVC]
         """
         pass
