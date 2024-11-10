@@ -143,9 +143,10 @@ class FacadeModel(Model, ABC):
         return self._wrapped_model.predict(x)
 
     @abstractmethod
-    def _initialize_model(self) -> Union[Ridge,
-        Lasso, LinearRegression, LogisticRegression,
-        KNeighborsClassifier, SVC]:
+    def _initialize_model(self) -> Union[
+            Ridge, Lasso, LinearRegression, LogisticRegression,
+            KNeighborsClassifier, SVC
+        ]:
         """
         Abstract method for initializing the wrapped model instance.
         Returns:
