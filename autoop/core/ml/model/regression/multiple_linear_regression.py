@@ -17,6 +17,9 @@ class RegularizedRegression(FacadeModel, ABC):
     def _initialize_model(self) -> Union[SKLasso, SKRidge]:
         """
         Initializes and returns the specific regression model.
+        Note: I could not use a super class of both Ridge and Lasso
+        from sklearn, like LinearModel, because was in a private
+        package(for a return type hint).
         Returns:
             Any: The model instance for the subclass implementing this method.
         """
