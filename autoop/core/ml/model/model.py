@@ -144,10 +144,10 @@ class FacadeModel(Model, ABC):
 
     @abstractmethod
     def _initialize_model(self) -> (
-            Ridge 
-            | Lasso 
-            | LinearRegression 
-            | LogisticRegression 
+            Ridge
+            | Lasso
+            | LinearRegression
+            | LogisticRegression
             | KNeighborsClassifier
             | SVC
     ):
