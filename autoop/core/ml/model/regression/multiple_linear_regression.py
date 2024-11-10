@@ -21,7 +21,7 @@ class RegularizedRegression(FacadeModel, ABC):
         from sklearn, like LinearModel, because was in a private
         package(for a return type hint).
         Returns:
-            Any: The model instance for the subclass implementing this method.
+            Union[SKLasso, SKRidge]
         """
         pass
 
