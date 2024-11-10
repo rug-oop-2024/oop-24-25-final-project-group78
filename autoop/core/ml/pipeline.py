@@ -21,7 +21,7 @@ class Pipeline:
                  model: Model,
                  input_features: List[Feature],
                  target_feature: Feature,
-                 split=0.8) -> None:
+                 split=0.8: float) -> None:
         """
         Initializes the Pipeline with the necessary components.
         Args:
@@ -43,8 +43,7 @@ class Pipeline:
         self._metrics = metrics
         self._artifacts = {}
         self._split = split
-        if (target_feature.type == "categorical"
-                and model.type != "classification"):
+        if (target_feature.type == "categorical" and model.type != "classification"):
             raise ValueError("Model type must be "
                              "classification for categorical target feature")
         if target_feature.type == "continuous" and model.type != "regression":
@@ -101,7 +100,9 @@ class Pipeline:
         }
         artifacts.append(Artifact(name="pipeline_config",
                                   data=pickle.dumps(pipeline_data)))
-        artifacts.append(self._model.to_artifact(name=f"pipeline_model_{self._model.type}"))
+        artifacts.append(
+            self._model.to_artifact(name=f"pipeline_model_{self._model.type}")
+        )
         return artifacts
 
     def _register_artifact(self, name: str, artifact: Dict) -> None:
