@@ -9,7 +9,7 @@ from sklearn.linear_model import LogisticRegression
 from autoop.core.ml.artifact import Artifact
 import numpy as np
 from copy import deepcopy
-from typing import Dict
+from typing import Dict, Union
 
 
 class Model(ABC):
