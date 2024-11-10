@@ -144,10 +144,13 @@ class FacadeModel(Model, ABC):
 
     @abstractmethod
     def _initialize_model(self) -> (
-            Ridge | Lasso |
-            LinearRegression |
-            LogisticRegression | KNeighborsClassifier
-            | SVC):
+            Ridge 
+            | Lasso 
+            | LinearRegression 
+            | LogisticRegression 
+            | KNeighborsClassifier
+            | SVC
+    ):
         """
         Abstract method for initializing the wrapped model instance.
         Returns:
