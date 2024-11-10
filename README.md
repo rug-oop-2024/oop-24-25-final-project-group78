@@ -162,7 +162,8 @@ If you did not implement the feature
 | `ML/model`                            | NF           | Bianca                     |    X     | |
 | `ML/model/extensions`                 | FN           | Bianca                     |    X     | |
 | `ML/pipeline/evaluation`              | FN           | Bianca                     |    X     | | 
-| `ST/page/datasets`                    | NF           | Bianca                     |    X     | |
+| `ST/page/datasets`                    | NF           | Bianca                     |    X   ![WhatsApp Image 2024-11-10 at 08 31 52_1512c6ed](https://github.com/user-attachments/assets/095382e0-d2cc-4780-82d9-8b3fe8a3e044)
+  | |
 | `ST/datasets/management/create`       | FN           | Bianca                     |    X     | |
 | `ST/datasets/management/save`         | FN           | Bianca                     |    X     | |
 | `ST/page/modelling`                   | NF           | Bianca                     |    X     | |
