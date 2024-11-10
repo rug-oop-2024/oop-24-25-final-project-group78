@@ -90,8 +90,7 @@ class ArtifactRegistry:
 
 
 class AutoMLSystem:
-    """Manages the AutoML system, handling instances
-    of storage, database, and artifact registry."""
+    """Manages the AutoML system"""
 
     _instance = None
 
