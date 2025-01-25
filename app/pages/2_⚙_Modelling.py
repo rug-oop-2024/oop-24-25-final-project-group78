@@ -156,18 +156,23 @@ else:
 
                 st.write("### Metrics on Training Set:")
                 for metric_fn, value in training_metrics:
-                    st.write(f"**{metric_fn.__class__.__name__}:** {value:.4f}")
+                    st.write(f"**{metric_fn.__class__.__name__}:"
+                             f"** {value:.4f}")
 
                 st.write("### Metrics on Evaluation Set:")
                 for metric_fn, value in testing_metrics:
-                    st.write(f"**{metric_fn.__class__.__name__}:** {value:.4f}")
+                    st.write(f"**{metric_fn.__class__.__name__}:"
+                             f"** {value:.4f}")
 
                 st.session_state["pipeline"] = pipeline
 
             except ValueError:
-                st.error("An error occurred during the execution of the pipeline."
-                         " Most likely the train/test split is too extreme, and the"
-                         " dataset too small for the model to fit. Try adjusting the split.\n")
+                st.error("An error occurred during the "
+                         "execution of the pipeline."
+                         " Most likely the train/test split "
+                         "is too extreme, and the"
+                         " dataset too small for the model to fit. "
+                         "Try adjusting the split.\n")
 
         else:
             write_helper_text("Execution condition violated. "
