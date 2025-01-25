@@ -86,10 +86,10 @@ else:
     # Add a slider for train-test split
     split_ratio = st.slider(
         "Select Train-Test Split Ratio",
-        min_value=0.,  # Minimum training ratio
-        max_value=1.,  # Maximum training ratio
-        value=0.8,  # Default value
-        step=0.1,  # Step size
+        min_value=0.,
+        max_value=1.,
+        value=0.8,
+        step=0.1,
     )
 
     split_ratio_int = int(100 * split_ratio)
