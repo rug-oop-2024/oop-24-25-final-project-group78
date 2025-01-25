@@ -56,7 +56,7 @@ class ArtifactRegistry:
                 tags=data["tags"],
                 metadata=data["metadata"],
                 data=self._storage.load(data["asset_path"]),
-                type=data["type"],
+                type_=data["type"],
             )
             artifacts.append(artifact)
         return artifacts
