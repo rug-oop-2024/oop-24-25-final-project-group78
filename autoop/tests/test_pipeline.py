@@ -6,7 +6,9 @@ from autoop.core.ml.pipeline import Pipeline
 from autoop.core.ml.dataset import Dataset
 from autoop.core.ml.feature import Feature
 from autoop.functional.feature import detect_feature_types
-from autoop.core.ml.model.regression.multiple_linear_regression import MultipleLinearRegression
+from autoop.core.ml.model.regression.multiple_linear_regression import (
+    MultipleLinearRegression,
+)
 from autoop.core.ml.metric import MeanSquaredError
 
 
