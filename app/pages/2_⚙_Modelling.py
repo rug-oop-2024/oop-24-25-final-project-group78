@@ -123,11 +123,13 @@ else:
     execute_button = st.button("Execute")
 
     if execute_button:
-        exec_condition = ((not selected_metrics == []) and
-                          (selected_dataset is not None) and
-                          (selected_model is not None) and
-                          (not input_features == []) and
-                          (target_feature is not None))
+    exec_condition = (
+        (not selected_metrics == [])
+        and (selected_dataset is not None)
+        and (selected_model is not None)
+        and (not input_features == [])
+        and (target_feature is not None)
+    )
 
         if exec_condition:
             pipeline = Pipeline(selected_metrics,
