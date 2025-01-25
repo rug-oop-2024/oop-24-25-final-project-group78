@@ -187,11 +187,21 @@ class Pipeline:
         predictions_train = self._model.predict(X_train)
 
         for metric in self._metrics:
-            result_test, result_train = (metric(predictions, Y),
-                                         metric(predictions_train, Y_train))
+            result_test, result_train = (metric(Y, predictions),
+                                         metric(Y_train, predictions_train))
             self._metrics_results_test.append((metric, result_test))
             self._metrics_results_train.append((metric, result_train))
         self._predictions = predictions
+
+    def _ensure_labels_classification(self) -> None:
+        """
+        Changes the labels back into class labels from onehot encoding.
+        """
+        if self._model.type == "classification":
+            if self._train_y.ndim > 1:
+                self._train_y = np.argmax(self._train_y, axis=1)
+            if self._test_y.ndim > 1:
+                self._test_y = np.argmax(self._test_y, axis=1)
 
     def execute(self) -> Dict[str, Any]:
         """
@@ -201,6 +211,7 @@ class Pipeline:
         """
         self._preprocess_features()
         self._split_data()
+        self._ensure_labels_classification()
         self._train()
         self._evaluate()
         return {
