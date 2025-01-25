@@ -19,6 +19,17 @@ class KNN(FacadeModel):
         super().__init__(*args, params=params, **kwargs)
         self._type = "classification"
 
+    def _set_default_params(self) -> None:
+        """Sets default parameters for KNN."""
+        self._params = {
+            "n_neighbors": 5,
+            "weights": "uniform",
+            "algorithm": "auto",
+            "leaf_size": 30,
+            "metric": "minkowski",
+            "p": 2,
+        }
+
     def _set_params_from_model(self) -> None:
         """Extracts parameters from the trained KNN model and saves them."""
         self._params["n_neighbors"] = self._wrapped_model.n_neighbors
@@ -28,7 +39,7 @@ class KNN(FacadeModel):
         self._params["metric"] = self._wrapped_model.metric
         self._params["p"] = self._wrapped_model.p
 
-    def validate_params(self, params: Dict) -> None:
+    def _validate_params(self, params: Dict) -> None:
         """Validates that the required parameters
         Args:
             params (Dict): Dictionary of model parameters.
@@ -69,7 +80,11 @@ class LogisticRegressionModel(FacadeModel):
         self._params["C"] = self._wrapped_model.C
         self._params["max_iter"] = self._wrapped_model.max_iter
 
-    def validate_params(self, params: Dict) -> None:
+    def _set_default_params(self) -> None:
+        """Sets default parameters for Logistic Regression."""
+        self._params = {"C": 1.0, "max_iter": 100}
+
+    def _validate_params(self, params: Dict) -> None:
         """Validates that the required parameters.
         Args:
             params (Dict): Dictionary of model parameters.
@@ -109,7 +124,11 @@ class SVCModel(FacadeModel):
         self._params["kernel"] = self._wrapped_model.kernel
         self._params["gamma"] = self._wrapped_model.gamma
 
-    def validate_params(self, params: Dict) -> None:
+    def _set_default_params(self) -> None:
+        """Sets default parameters for SVC."""
+        self._params = {"C": 1.0, "kernel": "rbf", "gamma": "scale"}
+
+    def _validate_params(self, params: Dict) -> None:
         """Validates that the required parameters
         Args:
             params (Dict): Dictionary of model parameters.
