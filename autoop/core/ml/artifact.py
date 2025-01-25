@@ -26,7 +26,7 @@ class Artifact(BaseModel):
             metadata: Dict,
             type_: str,
             data: Optional[bytes] = None,
-    ):
+    ) -> None:
         """
         Initializes the Artifact with given parameters.
 
@@ -87,8 +87,8 @@ class Artifact(BaseModel):
         Returns:
             bytes: The saved data.
         """
-        self.data = data
-        return self.data
+        self._data = data
+        return self._data
 
     @property
     def metadata(self) -> Dict:
