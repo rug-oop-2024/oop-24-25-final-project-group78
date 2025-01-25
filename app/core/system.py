@@ -76,7 +76,7 @@ class ArtifactRegistry:
             tags=data["tags"],
             metadata=data["metadata"],
             data=self._storage.load(data["asset_path"]),
-            type=data["type"],
+            type_=data["type"],
         )
 
     def delete(self, artifact_id: str) -> None:
