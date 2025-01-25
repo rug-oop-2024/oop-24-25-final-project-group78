@@ -162,20 +162,18 @@ If you did not implement the feature
 | `ML/model`                            | NF           | Bianca                     |    X     | |
 | `ML/model/extensions`                 | FN           | Bianca                     |    X     | |
 | `ML/pipeline/evaluation`              | FN           | Bianca                     |    X     | | 
-| `ST/page/datasets`                    | NF           | Bianca                     |    X  ![WhatsApp Image 2024-11-10 at 08 28 47_98d5536f](https://github.com/user-attachments/assets/aa7778d8-84a9-477b-a804-bd91535de6d4)
- ![WhatsApp Image 2024-11-10 at 08 31 52_1512c6ed](https://github.com/user-attachments/assets/095382e0-d2cc-4780-82d9-8b3fe8a3e044)
-  | |
+| `ST/page/datasets`                    | NF           | Bianca                     |    X     | |
 | `ST/datasets/management/create`       | FN           | Bianca                     |    X     | |
 | `ST/datasets/management/save`         | FN           | Bianca                     |    X     | |
 | `ST/page/modelling`                   | NF           | Bianca                     |    X     | |
-| `ST/modelling/datasets/list`          | FN           |                      |         | |
-| `ST/modelling/datasets/features`      | FN           |                      |         | |
-| `ST/modelling/models`                 | FN           |                      |         | |
-| `ST/modelling/pipeline/split`         | FN           |                      |         | |
-| `ST/modelling/pipeline/metrics`       | FN           |                      |         | |
-| `ST/modelling/pipeline/summary`       | FN           |                      |         | |
-| `ST/modelling/pipeline/train`         | FN           |                      |         | |
-| `ST/modelling/pipeline/save`          | FN           |                      |         | |
+| `ST/modelling/datasets/list`          | FN           | Bianca                     |    X     | |
+| `ST/modelling/datasets/features`      | FN           | Bianca                     |    X     | |
+| `ST/modelling/models`                 | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/split`         | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/metrics`       | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/summary`       | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/train`         | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/save`          | FN           | Bianca                     |    X     | |
 | `ST/page/deployment`                  | FN           |                      |         | |
 | `ST/deployment/load`                  | FN           |                      |         | |
 | `ST/deployment/predict`               | FN           |                      |         | |
