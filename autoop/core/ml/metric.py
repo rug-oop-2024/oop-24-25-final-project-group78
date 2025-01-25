@@ -2,15 +2,18 @@ from abc import ABC, abstractmethod
 from typing import List, Union
 import numpy as np
 
-METRICS = [
-    "mean_squared_error",
+METRICS_CLASSIFICATION = [
     "accuracy",
     "recall",
+    "macro_f1_score"
+]
+
+
+METRICS_REGRESSION = [
     "mean_absolute_error",
     "root_mean_squared_error",
+    "mean_squared_error",
     "coefficient_of_determination",
-    "cross_entropy",
-    "confusion_matrix"
 ]
 
 
@@ -43,7 +46,7 @@ def get_metric(name: str) -> Metric:
     Raises:
         ValueError: If the metric name is not recognized.
     """
-    if name not in METRICS:
+    if name not in METRICS_REGRESSION and name not in METRICS_CLASSIFICATION:
         raise ValueError("Unknown metric name")
     if name == "mean_squared_error":
         return MeanSquaredError()
@@ -57,10 +60,8 @@ def get_metric(name: str) -> Metric:
         return RootMeanSquaredError()
     elif name == "coefficient_of_determination":
         return CoefficientOfDetermination()
-    elif name == "cross_entropy":
-        return CategoricalCrossEntropy()
-    elif name == "confusion_matrix":
-        return ConfusionMatrix()
+    elif name == "macro_f1_score":
+        return MacroF1Score()
 
 
 class MeanSquaredError(Metric):
@@ -179,45 +180,43 @@ class CoefficientOfDetermination(Metric):
         return float(1 - (rss / tss))
 
 
-class CategoricalCrossEntropy(Metric):
+class MacroF1Score(Metric):
     """
-    Categorical Cross Entropy Loss for classification tasks.
-    """
-    def __call__(self, y_true: Union[List[float], np.ndarray],
-                 y_pred: Union[List[float], np.ndarray]) -> float:
-        """
-        Calculate Categorical Cross Entropy Loss.
-        Args:
-            y_true (Union[List[float], np.ndarray]): Ground truth values.
-            y_pred (Union[List[float], np.ndarray]): Predicted probabilities.
-        Returns:
-            float: The cross-entropy loss value.
-        """
-        return float(-np.sum(y_true * np.log(y_pred)))
-
-
-class ConfusionMatrix(Metric):
-    """
-    Confusion Matrix for classification tasks.
+    Macro-Averaged F1 Score for multi-class classification.
     """
     def __call__(self, y_true: Union[List[int], np.ndarray],
-                 y_pred: Union[List[int], np.ndarray]) -> np.ndarray:
+                 y_pred: Union[List[int], np.ndarray]) -> float:
         """
-        Calculate Confusion Matrix.
+        Calculate Macro-Averaged F1 Score.
+
         Args:
-            y_true (Union[List[int], np.ndarray]):
-            Ground truth values (integer labels).
-            y_pred (Union[List[int], np.ndarray]):
-            Predicted values (integer labels).
+            y_true (Union[List[int], np.ndarray]): Ground truth values.
+            y_pred (Union[List[int], np.ndarray]): Predicted values.
+
         Returns:
-            np.ndarray: The confusion matrix
+            float: The Macro F1 Score value.
         """
-        max_label = max(max(y_true), max(y_pred))
-        confusion_matrix = (
-            np.zeros((max_label + 1,
-                      max_label + 1), dtype=np.int16))
 
-        for true, pred in zip(y_true, y_pred):
-            confusion_matrix[true, pred] += 1
+        if y_true.size == 0 or y_pred.size == 0:
+            raise ValueError("y_true or y_pred is empty!")
 
-        return confusion_matrix
+        unique_classes = np.unique(y_true)
+        f1_scores = []
+
+        for _class in unique_classes:
+            true_positive = np.sum((y_pred == _class) & (y_true == _class))
+            false_positive = np.sum((y_pred == _class) & (y_true != _class))
+            false_negative = np.sum((y_pred != _class) & (y_true == _class))
+
+            precision = true_positive / (true_positive + false_positive) \
+                if (true_positive + false_positive) > 0 else 0
+            recall = true_positive / (true_positive + false_negative) \
+                if (true_positive + false_negative) > 0 else 0
+
+            f1 = 2 * (precision * recall) / (precision + recall) \
+                if (precision + recall) > 0 else 0
+            f1_scores.append(f1)
+
+        macro_f1 = np.mean(f1_scores)
+
+        return float(macro_f1)
