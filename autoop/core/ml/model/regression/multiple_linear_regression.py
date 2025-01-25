@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Dict
 from typing import Union
 
@@ -9,7 +9,7 @@ from sklearn.linear_model import Ridge as SKRidge
 from autoop.core.ml.model.model import FacadeModel
 
 
-class RegularizedRegression(FacadeModel, ABC):
+class RegularizedRegression(FacadeModel):
     """Base class containing common functionality
     for regularized regression models."""
 
@@ -34,10 +34,9 @@ class RegularizedRegression(FacadeModel, ABC):
         """
         super().__init__(*args, params=params, **kwargs)
         self._type = "regression"
-        self.params = (
-            params) if params is not None else {"alpha": 1, "max_iter": 1000}
+        self.params = params
 
-    def validate_params(self, params: Dict) -> None:
+    def _validate_params(self, params: Dict) -> None:
         """Validates the provided parameters to
         ensure they include "alpha" and "max_iter".
         Args:
@@ -45,9 +44,16 @@ class RegularizedRegression(FacadeModel, ABC):
         Raises:
             ValueError: If required keys "alpha" and "max_iter" are missing.
         """
-        if "alpha" not in params or "max_iter" not in params:
+        if "alpha" not in params.keys() or "max_iter" not in params.keys():
             raise ValueError("Invalid params. They should "
-                             "contain 'alpha' and 'max_iter'.")
+                             "contain 'alpha' and 'max_iter'."
+                             f" {params} were given.")
+
+    def _set_default_params(self) -> None:
+        """
+        Sets the default parameters for the specific model.
+        """
+        self._params = {"alpha": 1, "max_iter": 1000}
 
     def _set_params_from_model(self) -> None:
         """Saves the coefficients and intercept of the regression model"""
@@ -101,7 +107,7 @@ class MultipleLinearRegression(FacadeModel):
         self._params["coef_"] = self._wrapped_model.coef_
         self._params["intercept_"] = self._wrapped_model.intercept_
 
-    def validate_params(self, params: Dict) -> None:
+    def _validate_params(self, params: Dict) -> None:
         """No specific validation is required for linear
         regression as it has no regularization parameters."""
         pass
@@ -112,3 +118,9 @@ class MultipleLinearRegression(FacadeModel):
             SKLinearRegression: LinearRegression model from sklearn.
         """
         return SKLinearRegression()
+
+    def _set_default_params(self) -> None:
+        """
+        Sets the default parameters for the specific model.
+        """
+        self._params = {}
