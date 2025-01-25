@@ -59,6 +59,13 @@ class Model(ABC):
         """
         return deepcopy(self._params)
 
+    @abstractmethod
+    def _set_default_params(self) -> None:
+        """
+        Sets the default parameters for the specific model.
+        """
+        pass
+
     @params.setter
     def params(self, params: Dict) -> None:
         """
@@ -68,11 +75,14 @@ class Model(ABC):
         Raises:
             ValueError: If parameters do not meet validation criteria.
         """
-        self.validate_params(params)
-        self._params = params
+        if params is None or params == {}:
+            self._set_default_params()
+        else:
+            self._validate_params(params)
+            self._params = params
 
     @abstractmethod
-    def validate_params(self, params: Dict) -> None:
+    def _validate_params(self, params: Dict) -> None:
         """
         Abstract method for validating model parameters.
         Args:
@@ -104,7 +114,7 @@ class Model(ABC):
         return Artifact(name=name, data=pickle.dumps(self._params))
 
 
-class FacadeModel(Model, ABC):
+class FacadeModel(Model):
     """
     Implements the Facade design pattern to simplify model interactions.
     """
@@ -119,7 +129,7 @@ class FacadeModel(Model, ABC):
             **kwargs: Additional keyword arguments for base initialization.
         """
         super().__init__(*args, **kwargs)
-        self.params = params if params is not None else {}
+        self.params = params
         self._wrapped_model = self._initialize_model()
 
     def fit(self, train_x: np.ndarray, train_y: np.ndarray) -> None:
@@ -141,6 +151,13 @@ class FacadeModel(Model, ABC):
             np.ndarray: Predictions for the input data.
         """
         return self._wrapped_model.predict(x)
+
+    @abstractmethod
+    def _set_default_params(self) -> None:
+        """
+        Sets the default parameters for the specific model.
+        """
+        pass
 
     @abstractmethod
     def _initialize_model(self) -> Union[
