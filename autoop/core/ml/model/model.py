@@ -1,3 +1,4 @@
+import os.path
 import pickle
 from abc import abstractmethod, ABC
 
@@ -111,7 +112,8 @@ class Model(ABC):
             Artifact: An Artifact instance
             containing the serialized parameters.
         """
-        return Artifact(name=name, data=pickle.dumps(self._params))
+        return Artifact(name=name, data=pickle.dumps(self._params), asset_path=os.path.curdir,
+                        metadata={}, tags=[], type_="model", version="1.0")
 
 
 class FacadeModel(Model):
