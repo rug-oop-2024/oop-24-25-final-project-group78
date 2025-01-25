@@ -16,7 +16,7 @@ class Dataset(Artifact):
             *args, **kwargs: Positional and keyword
             arguments passed to the Artifact initializer.
         """
-        super().__init__(type="dataset", *args, **kwargs)
+        super().__init__(type_="dataset", *args, **kwargs)
 
     @staticmethod
     def from_dataframe(data: pd.DataFrame, name: str, asset_path: str,
