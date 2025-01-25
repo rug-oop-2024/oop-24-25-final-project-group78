@@ -140,27 +140,34 @@ else:
                                 target_feature,
                                 split_ratio)
 
-            results = pipeline.execute()
+            try:
 
-            # Store the pipeline in Streamlit's session state dictionary
-            # So it remains available at each rerun of the script
-            st.session_state["pipeline"] = pipeline
+                results = pipeline.execute()
 
-            training_metrics = results["metrics on training set"]
-            testing_metrics = results["metrics on evaluation set"]
-            preds = results["predictions"]
+                # Store the pipeline in Streamlit's session state dictionary
+                # So it remains available at each rerun of the script
+                st.session_state["pipeline"] = pipeline
 
-            st.write("## Results")
+                training_metrics = results["metrics on training set"]
+                testing_metrics = results["metrics on evaluation set"]
+                preds = results["predictions"]
 
-            st.write("### Metrics on Training Set:")
-            for metric_fn, value in training_metrics:
-                st.write(f"**{metric_fn.__class__.__name__}:** {value:.4f}")
+                st.write("## Results")
 
-            st.write("### Metrics on Evaluation Set:")
-            for metric_fn, value in testing_metrics:
-                st.write(f"**{metric_fn.__class__.__name__}:** {value:.4f}")
+                st.write("### Metrics on Training Set:")
+                for metric_fn, value in training_metrics:
+                    st.write(f"**{metric_fn.__class__.__name__}:** {value:.4f}")
 
-            st.session_state["pipeline"] = pipeline
+                st.write("### Metrics on Evaluation Set:")
+                for metric_fn, value in testing_metrics:
+                    st.write(f"**{metric_fn.__class__.__name__}:** {value:.4f}")
+
+                st.session_state["pipeline"] = pipeline
+
+            except ValueError:
+                st.error("An error occurred during the execution of the pipeline."
+                         " Most likely the train/test split is too extreme, and the"
+                         " dataset too small for the model to fit. Try adjusting the split.\n")
 
         else:
             write_helper_text("Execution condition violated. "
