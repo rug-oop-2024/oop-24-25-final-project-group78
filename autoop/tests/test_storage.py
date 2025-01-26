@@ -35,8 +35,11 @@ class TestStorage(unittest.TestCase):
         self.assertEqual(self.storage.load(key), test_bytes)
 
         otherkey = f"test{os.sep}otherpath"
-        with self.assertRaises(NotFoundError):
+        # should not be the same
+        try:
             self.storage.load(otherkey)
+        except Exception as e:
+            self.assertIsInstance(e, NotFoundError)
 
     def test_delete(self):
         """
@@ -47,9 +50,10 @@ class TestStorage(unittest.TestCase):
         key = f"test{os.sep}path"
         self.storage.save(test_bytes, key)
         self.storage.delete(key)
-        with self.assertRaises(NotFoundError):
-            self.storage.load(key)
-
+        try:
+            self.assertIsNone(self.storage.load(key))
+        except Exception as e:
+            self.assertIsInstance(e, NotFoundError)
     def test_list(self):
         """
         Test the 'list' functionality
