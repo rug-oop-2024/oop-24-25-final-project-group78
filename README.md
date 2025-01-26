@@ -153,27 +153,27 @@ If you did not implement the feature
 
 | Requirement                           | Type (FN/NF) | Implemented by       | Implementation Completed (add X if done) | Comment |
 |-------------------------------------- |--------------|----------------------|--------------------------|---------|         
-| Up-to-date requirements.txt           | NF           |                      |         | |
-| `ML/detect-features`                  | FN           |                      |         | |
-| `ML/artifact`                         | NF           |                      |         | |
-| `ML/feature`                          | NF           |                      |         | |
-| `ML/metric`                           | NF           |                      |         | |
-| `ML/metric/extensions`                | FN           |                      |         | |
-| `ML/model`                            | NF           |                      |         | |
-| `ML/model/extensions`                 | FN           |                      |         | |
-| `ML/pipeline/evaluation`              | FN           |                      |         | | 
-| `ST/page/datasets`                    | NF           |                      |         | |
-| `ST/datasets/management/create`       | FN           |                      |         | |
-| `ST/datasets/management/save`         | FN           |                      |         | |
-| `ST/page/modelling`                   | NF           |                      |         | |
-| `ST/modelling/datasets/list`          | FN           |                      |         | |
-| `ST/modelling/datasets/features`      | FN           |                      |         | |
-| `ST/modelling/models`                 | FN           |                      |         | |
-| `ST/modelling/pipeline/split`         | FN           |                      |         | |
-| `ST/modelling/pipeline/metrics`       | FN           |                      |         | |
-| `ST/modelling/pipeline/summary`       | FN           |                      |         | |
-| `ST/modelling/pipeline/train`         | FN           |                      |         | |
-| `ST/modelling/pipeline/save`          | FN           |                      |         | |
+| Up-to-date requirements.txt           | NF           | Bianca                     |    X     | |
+| `ML/detect-features`                  | FN           | Bianca                     |    X     | |
+| `ML/artifact`                         | NF           | Bianca                     |    X     | |
+| `ML/feature`                          | NF           | Bianca                     |    X     | |
+| `ML/metric`                           | NF           | Bianca                     |    X     | |
+| `ML/metric/extensions`                | FN           | Bianca                     |    X     | |
+| `ML/model`                            | NF           | Bianca                     |    X     | |
+| `ML/model/extensions`                 | FN           | Bianca                     |    X     | |
+| `ML/pipeline/evaluation`              | FN           | Bianca                     |    X     | | 
+| `ST/page/datasets`                    | NF           | Bianca                     |    X     | |
+| `ST/datasets/management/create`       | FN           | Bianca                     |    X     | |
+| `ST/datasets/management/save`         | FN           | Bianca                     |    X     | |
+| `ST/page/modelling`                   | NF           | Bianca                     |    X     | |
+| `ST/modelling/datasets/list`          | FN           | Bianca                     |    X     | |
+| `ST/modelling/datasets/features`      | FN           | Bianca                     |    X     | |
+| `ST/modelling/models`                 | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/split`         | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/metrics`       | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/summary`       | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/train`         | FN           | Bianca                     |    X     | |
+| `ST/modelling/pipeline/save`          | FN           | Bianca                     |    X     | |
 | `ST/page/deployment`                  | FN           |                      |         | |
 | `ST/deployment/load`                  | FN           |                      |         | |
 | `ST/deployment/predict`               | FN           |                      |         | |
