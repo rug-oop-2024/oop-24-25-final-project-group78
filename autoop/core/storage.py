@@ -77,7 +77,7 @@ class LocalStorage(Storage):
         Args:
             base_path (str): The base directory for storage.
         """
-        self._base_path = os.path.normpath(base_path)
+        self._base_path = base_path
         if not os.path.exists(self._base_path):
             os.makedirs(self._base_path)
 
@@ -89,7 +89,8 @@ class LocalStorage(Storage):
             key (str): Relative path and filename under base path to save data.
         """
         path = self._join_path(key)
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        if not os.path.exists(path):
+            os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, 'wb') as f:
             f.write(data)
 
@@ -112,8 +113,8 @@ class LocalStorage(Storage):
         Args:
             key (str):Path where data will be deleted.
         """
+        self._assert_path_exists(self._join_path(key))
         path = self._join_path(key)
-        self._assert_path_exists(path)
         os.remove(path)
 
     def list(self, prefix: str = "/") -> List[str]:
@@ -127,9 +128,7 @@ class LocalStorage(Storage):
         path = self._join_path(prefix)
         self._assert_path_exists(path)
         keys = glob(os.path.join(path, "**", "*"), recursive=True)
-        return [os.path.relpath(p,
-                                self._base_path) for
-                p in keys if os.path.isfile(p)]
+        return list(filter(os.path.isfile, keys))
 
     def _assert_path_exists(self, path: str) -> None:
         """
@@ -149,6 +148,6 @@ class LocalStorage(Storage):
         Args:
             path (str): Relative path to join with the base path.
         Returns:
-            str: Normalized, OS-compatible full path.
+            str: Full path.
         """
-        return os.path.normpath(os.path.join(self._base_path, path))
+        return os.path.join(self._base_path, path)
